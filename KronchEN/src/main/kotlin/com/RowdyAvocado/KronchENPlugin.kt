@@ -7,19 +7,19 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class KronchENPlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(KronchEN())
-    }
+  override fun load(context: Context) {
+    registerMainAPI(KronchEN())
+  }
 
-    companion object {
-        inline fun Handler.postFunction(crossinline function: () -> Unit) {
-            this.post(
-                    object : Runnable {
-                        override fun run() {
-                            function()
-                        }
-                    }
-            )
+  companion object {
+    inline fun Handler.postFunction(crossinline function: () -> Unit) {
+      this.post(
+        object : Runnable {
+          override fun run() {
+            function()
+          }
         }
+      )
     }
+  }
 }

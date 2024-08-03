@@ -7,31 +7,31 @@ import com.lagradost.cloudstream3.extractors.VidSrcTo
 import com.lagradost.cloudstream3.utils.ExtractorLink
 
 class VidsrcToMediaProvider : MediaProvider() {
-    override val name = "VidsrcTo"
-    override val domain = "https://vidsrc.to"
-    override val categories = listOf(Category.MEDIA)
+  override val name = "VidsrcTo"
+  override val domain = "https://vidsrc.to"
+  override val categories = listOf(Category.MEDIA)
 
-    override suspend fun loadContent(
-            url: String,
-            data: LinkData,
-            subtitleCallback: (SubtitleFile) -> Unit,
-            callback: (ExtractorLink) -> Unit
-    ) {
-        val id = data.tmdbId ?: data.imdbId ?: return
-        val iFrameUrl =
-                if (data.season == null) {
-                    "$url/embed/movie/$id"
-                } else {
-                    "$url/embed/tv/$id/${data.season}/${data.episode}"
-                }
-        VidSrcTo().getUrl(iFrameUrl, url, subtitleCallback, callback)
-    }
+  override suspend fun loadContent(
+    url: String,
+    data: LinkData,
+    subtitleCallback: (SubtitleFile) -> Unit,
+    callback: (ExtractorLink) -> Unit
+  ) {
+    val id = data.tmdbId ?: data.imdbId ?: return
+    val iFrameUrl =
+      if (data.season == null) {
+        "$url/embed/movie/$id"
+      } else {
+        "$url/embed/tv/$id/${data.season}/${data.episode}"
+      }
+    VidSrcTo().getUrl(iFrameUrl, url, subtitleCallback, callback)
+  }
 
-    // #region - Encryption and Decryption handlers
-    // #endregion - Encryption and Decryption handlers
+  // #region - Encryption and Decryption handlers
+  // #endregion - Encryption and Decryption handlers
 
-    // #region - Data classes
-    // #endregion - Data classes
+  // #region - Data classes
+  // #endregion - Data classes
 
 }
 

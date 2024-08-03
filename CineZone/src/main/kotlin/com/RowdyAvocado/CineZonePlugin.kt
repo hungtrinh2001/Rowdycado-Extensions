@@ -6,7 +6,7 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class CineZonePlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(CineZone(this))
-    }
+  override fun load(context: Context) {
+    registerMainAPI(CineZone(this))
+  }
 }

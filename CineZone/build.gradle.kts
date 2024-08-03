@@ -1,22 +1,22 @@
 version = 8
 
 cloudstream {
-    description = "The best extension for watching movies and tv shows from CineZone"
-    authors = listOf("RowdyRushya")
+  description = "The best extension for watching movies and tv shows from CineZone"
+  authors = listOf("RowdyRushya")
 
-    /**
-    * Status int as the following:
-    * 0: Down
-    * 1: Ok
-    * 2: Slow
-    * 3: Beta only
-    * */
-    status = 1
+  /**
+   * Status int as the following:
+   * 0: Down
+   * 1: Ok
+   * 2: Slow
+   * 3: Beta only
+   * */
+  status = 1
 
-    tvTypes = listOf("movies", "TvSeries")
+  tvTypes = listOf("movies", "TvSeries")
 
-    requiresResources = true
-    language = "en"
+  requiresResources = true
+  language = "en"
 
-    iconUrl = "https://cinezone.to/assets/sites/cinezone/favicon.png"
+  iconUrl = "https://cinezone.to/assets/sites/cinezone/favicon.png"
 }

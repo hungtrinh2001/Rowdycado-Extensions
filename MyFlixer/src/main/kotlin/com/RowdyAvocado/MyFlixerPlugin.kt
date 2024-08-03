@@ -7,11 +7,11 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class MyFlixerPlugin : Plugin() {
-    var activity: AppCompatActivity? = null
+  var activity: AppCompatActivity? = null
 
-    override fun load(context: Context) {
-        activity = context as AppCompatActivity
-        // All providers should be added in this manner
-        registerMainAPI(MyFlixer(this))
-    }
+  override fun load(context: Context) {
+    activity = context as AppCompatActivity
+    // All providers should be added in this manner
+    registerMainAPI(MyFlixer(this))
+  }
 }

@@ -6,7 +6,7 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class GoldenAudiobookPlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(GoldenAudiobook())
-    }
+  override fun load(context: Context) {
+    registerMainAPI(GoldenAudiobook())
+  }
 }

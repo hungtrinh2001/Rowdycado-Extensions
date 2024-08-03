@@ -6,7 +6,7 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class TokyBookPlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(TokyBook())
-    }
+  override fun load(context: Context) {
+    registerMainAPI(TokyBook())
+  }
 }

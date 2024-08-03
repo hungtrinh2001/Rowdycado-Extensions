@@ -6,7 +6,7 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class AnichiPlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(Anichi())
-    }
+  override fun load(context: Context) {
+    registerMainAPI(Anichi())
+  }
 }

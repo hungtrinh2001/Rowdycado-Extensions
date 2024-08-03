@@ -6,7 +6,7 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class AnitakuProviderPlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(AnitakuProvider())
-    }
+  override fun load(context: Context) {
+    registerMainAPI(AnitakuProvider())
+  }
 }

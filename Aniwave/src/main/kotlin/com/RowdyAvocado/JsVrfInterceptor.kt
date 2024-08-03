@@ -17,73 +17,74 @@ import java.util.concurrent.TimeUnit
 // https://github.com/jmir1/aniyomi-extensions/blob/master/LICENSE
 class JsVrfInterceptor(private val baseUrl: String) {
 
-    private val handler by lazy { Handler(Looper.getMainLooper()) }
+  private val handler by lazy { Handler(Looper.getMainLooper()) }
 
-    private val vrfWebView = createWebView()
+  private val vrfWebView = createWebView()
 
-    fun wake() = ""
+  fun wake() = ""
 
-    fun getVrf(query: String): String {
-        val jscript = getJs(query)
-        val cdl = CountDownLatch(1)
-        var vrf = ""
-        handler.postFunction {
-            vrfWebView?.evaluateJavascript(jscript) {
-                vrf = it?.removeSurrounding("\"") ?: ""
-                cdl.countDown()
+  fun getVrf(query: String): String {
+    val jscript = getJs(query)
+    val cdl = CountDownLatch(1)
+    var vrf = ""
+    handler.postFunction {
+      vrfWebView?.evaluateJavascript(jscript) {
+        vrf = it?.removeSurrounding("\"") ?: ""
+        cdl.countDown()
+      }
+    }
+    cdl.await(12, TimeUnit.SECONDS)
+    if (vrf.isBlank()) throw Exception("vrf could not be retrieved")
+    return vrf
+  }
+
+  @SuppressLint("SetJavaScriptEnabled")
+  private fun createWebView(): WebView? {
+    val latch = CountDownLatch(1)
+    var webView: WebView? = null
+
+    handler.postFunction {
+      val webview = WebView(context!!)
+      webView = webview
+      with(webview.settings) {
+        javaScriptEnabled = true
+        domStorageEnabled = true
+        databaseEnabled = true
+        useWideViewPort = false
+        loadWithOverviewMode = false
+        userAgentString =
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0"
+
+        webview.webViewClient =
+          object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+              view: WebView?,
+              request: WebResourceRequest?
+            ): Boolean {
+              if (request?.url.toString().contains("$baseUrl/filter")) {
+                return super.shouldOverrideUrlLoading(view, request)
+              } else {
+                // Block the request
+                return true
+              }
             }
-        }
-        cdl.await(12, TimeUnit.SECONDS)
-        if (vrf.isBlank()) throw Exception("vrf could not be retrieved")
-        return vrf
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+              latch.countDown()
+            }
+          }
+        webView?.loadUrl("$baseUrl/filter")
+      }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun createWebView(): WebView? {
-        val latch = CountDownLatch(1)
-        var webView: WebView? = null
+    latch.await()
 
-        handler.postFunction {
-            val webview = WebView(context!!)
-            webView = webview
-            with(webview.settings) {
-                javaScriptEnabled = true
-                domStorageEnabled = true
-                databaseEnabled = true
-                useWideViewPort = false
-                loadWithOverviewMode = false
-                userAgentString =
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0"
+    handler.postFunction { webView?.stopLoading() }
+    return webView
+  }
 
-                webview.webViewClient =
-                        object : WebViewClient() {
-                            override fun shouldOverrideUrlLoading(
-                                    view: WebView?,
-                                    request: WebResourceRequest?
-                            ): Boolean {
-                                if (request?.url.toString().contains("$baseUrl/filter")) {
-                                    return super.shouldOverrideUrlLoading(view, request)
-                                } else {
-                                    // Block the request
-                                    return true
-                                }
-                            }
-                            override fun onPageFinished(view: WebView?, url: String?) {
-                                latch.countDown()
-                            }
-                        }
-                webView?.loadUrl("$baseUrl/filter")
-            }
-        }
-
-        latch.await()
-
-        handler.postFunction { webView?.stopLoading() }
-        return webView
-    }
-
-    private fun getJs(query: String): String {
-        return """
+  private fun getJs(query: String): String {
+    return """
             (function() {
                   document.querySelector("form.filters input.form-control").value = '$query';
                   let inputElemente = document.querySelector('form.filters input.form-control');
@@ -102,5 +103,5 @@ class JsVrfInterceptor(private val baseUrl: String) {
                   return val;
             })();
         """.trimIndent()
-    }
+  }
 }

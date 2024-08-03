@@ -10,34 +10,34 @@ import com.lagradost.cloudstream3.plugins.PluginManager
 
 @CloudstreamPlugin
 class AllWishPlugin : Plugin() {
-    var activity: AppCompatActivity? = null
+  var activity: AppCompatActivity? = null
 
-    companion object {
-        inline fun Handler.postFunction(crossinline function: () -> Unit) {
-            this.post(
-                    object : Runnable {
-                        override fun run() {
-                            function()
-                        }
-                    }
-            )
+  companion object {
+    inline fun Handler.postFunction(crossinline function: () -> Unit) {
+      this.post(
+        object : Runnable {
+          override fun run() {
+            function()
+          }
         }
+      )
     }
+  }
 
-    override fun load(context: Context) {
-        activity = context as AppCompatActivity
-        registerMainAPI(AllWish(this))
-    }
+  override fun load(context: Context) {
+    activity = context as AppCompatActivity
+    registerMainAPI(AllWish(this))
+  }
 
-    fun reload(context: Context?) {
-        val pluginData =
-                PluginManager.getPluginsOnline().find { it.internalName.contains("AllWish") }
-        if (pluginData == null) {
-            PluginManager.hotReloadAllLocalPlugins(context as AppCompatActivity)
-        } else {
-            PluginManager.unloadPlugin(pluginData.filePath)
-            PluginManager.loadAllOnlinePlugins(context!!)
-            afterPluginsLoadedEvent.invoke(true)
-        }
+  fun reload(context: Context?) {
+    val pluginData =
+      PluginManager.getPluginsOnline().find { it.internalName.contains("AllWish") }
+    if (pluginData == null) {
+      PluginManager.hotReloadAllLocalPlugins(context as AppCompatActivity)
+    } else {
+      PluginManager.unloadPlugin(pluginData.filePath)
+      PluginManager.loadAllOnlinePlugins(context!!)
+      afterPluginsLoadedEvent.invoke(true)
     }
+  }
 }

@@ -6,7 +6,7 @@ import com.lagradost.cloudstream3.plugins.Plugin
 
 @CloudstreamPlugin
 class HiAnimeProviderPlugin : Plugin() {
-    override fun load(context: Context) {
-        registerMainAPI(HiAnime())
-    }
+  override fun load(context: Context) {
+    registerMainAPI(HiAnime())
+  }
 }
